@@ -6,3 +6,4 @@ ethumbs.db
 Thumbs.db
 
 node_modules
+static/App.js
