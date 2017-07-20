@@ -1,0 +1,21 @@
+{
+  "name": "pro-mern-stack",
+  "version": "1.0.0",
+  "description": "Project for Pro MERN book",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "babel src --presets react,es2015 --out-dir static",
+    "watch": "babel src --presets react,es2015 --out-dir static --watch"
+  },
+  "author": "Erik Lopez",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.3",
+    "mongodb": "^2.2.30"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-react": "^6.24.1"
+  }
+}
