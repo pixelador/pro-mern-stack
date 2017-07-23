@@ -11,7 +11,8 @@ class IssueFilter extends React.Component {
 class IssueRow extends React.Component {
 
     render() {
-        const issue = this.props.issue;
+        const issue = this.props.issue
+        console.log('IssueRow render called')
         return(
             <tr>
                 <td>{issue.id}</td>
@@ -29,7 +30,7 @@ class IssueRow extends React.Component {
 class IssueTable extends React.Component {
     render() {
 
-        const issueRows = this.props.issues.map(issue => <IssueRow key={issue.id} issue={issue} />)
+        const issueRows = this.props.issues.map(e => <IssueRow key={e.id} issue={e} />)
 
         return(
             <table className="bordered-table">
@@ -58,7 +59,7 @@ class IssueAdd extends React.Component {
     }
 }
 
-const issues = [
+const issuesArray = [
     {
         id: 1,
         status: 'Open',
@@ -80,13 +81,45 @@ const issues = [
 ];
 
 class IssueList extends React.Component {
+    constructor() {
+        super();
+        this.state = {issues: []};
+        setTimeout(this.createTestIssue.bind(this), 2000);
+    }
+
+    loadData() {
+        setTimeout(() => {
+            this.setState({issues: issuesArray});
+        }, 500);
+    }
+
+    componentDidMount() {
+        this.loadData();
+    }
+
+    createIssue(newIssue) {
+        const newIssues = this.state.issues.slice();
+        newIssue.id = this.state.issues.length + 1;
+        newIssues.push(newIssue);
+        this.setState({issues: newIssues});
+    }
+
+    createTestIssue() {
+        this.createIssue({
+            status: 'New',
+            owner: 'Pieta',
+            created: new Date(),
+            title: 'Completion date should be optional',
+        });
+    }
+
     render() {
         return (
             <div>
                 <h1>Issue Tracker</h1>
                 <IssueFilter />
                 <hr/>
-                <IssueTable issues={issues} />
+                <IssueTable issues={this.state.issues} />
                 <hr/>
                 <IssueAdd />
             </div>
