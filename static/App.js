@@ -1,10 +1,14 @@
-const contentNode = document.getElementById('contents');
+'use strict';
 
-const continents = ['Africa', 'North America', 'Asia', 'Australia', 'Europe', 'Antarctica', 'South America'];
+var contentNode = document.getElementById('contents');
 
-const message = continents.map(c => `Hello ${c}! `).join('<br/>');
+var continents = ['Africa', 'North America', 'Asia', 'Australia', 'Europe', 'Antarctica', 'South America'];
 
-const component = React.createElement(
+var message = continents.map(function (c) {
+  return 'Hello ' + c + '! ';
+}).join('<br/>');
+
+var component = React.createElement(
   'p',
   null,
   message
