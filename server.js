@@ -1,3 +1,5 @@
+'use strict'
+
 // load a module and save its top level export to a const
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -31,7 +33,7 @@ const issues = [
         created: new Date('2016-08-16'),
         effort: 14,
         completionDate: new Date('2016-08-30'),
-        title: 'Missing bottom border on panel',
+        title: 'Oi, Missing bottom border on panel',
     },
 ];
 
@@ -40,6 +42,40 @@ app.get('/api/issues', (req, res) => {
     console.log('Log statement before the response!');
     res.json({_metadata: metadata, records: issues});
 });
+
+const validIssueStatus = {
+    New: true,
+    Open: true,
+    Assigned: true,
+    Fixed: true,
+    Verified: true,
+    Closed: true,
+};
+
+const issueFieldType = {
+    id: 'required',
+    status: 'required',
+    owner: 'required',
+    effort: 'optional',
+    created: 'required',
+    completionDate: 'optional',
+    title: 'required',
+};
+
+function validateIssue(issue) {
+    for(const field in issueFieldType) {
+        const type = issueFieldType[field];
+        if (!type) {
+            delete issue[field];
+        } else if (type === 'required' && !issue[field]) {
+            return `${field} is required.`;
+        }
+    }
+    if (!validIssueStatus[issue.status])
+        return `${issue.status} is not a valid status.`;
+
+    return null;
+}
 
 // Defines application setting
 // (<setting name>, <setting value>)
@@ -52,6 +88,12 @@ app.post('/api/issues', (req, res) => {
     newIssue.created = new Date();
     if (!newIssue.status)
         newIssue.status = 'New';
+
+    const err = validateIssue(newIssue);
+    if (err) {
+        res.status(422).json({message: `Invalid Request: ${err}`});
+        return;
+    }
     issues.push(newIssue);
     res.json(newIssue);
 });
