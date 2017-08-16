@@ -1,6 +1,76 @@
 'use strict';
 const MongoClient = require('mongodb');
 
+function testWithAsync() {
+    const async = require('async');
+    let db;
+    async.waterfall([
+        next => {
+            MongoClient.connect('mongodb://localhost/playground', next);
+        },
+        (connection, next) => {
+            db = connection;
+            db.collection('employees').insertOne({id: 1, name: 'D. Async'}, next);
+        },
+        (insertResult, next) => {
+            console.log('Insert result:', insertResult.insertId);
+            db.collection('employees').find({id: 1}).toArray(next);
+        },
+        (docs, next) => {
+            console.log('Result of find', docs);
+            db.close();
+            next(null, 'All Done');
+        }
+    ], (err, result) => {
+        if (err)
+            console.log('ERROR', err);
+        else
+            console.log(result);
+    });
+}
+
+function testWithGenerator() {
+    const co = require('co');
+    co(function*() {
+        const db = yield MongoClient.connect('mongodb://localhost/playground');
+        const result = yield db.collection('employees').insertOne({id: 1, name: 'C. Generator'});
+        console.log("Result of insert:", result.insertId);
+        const docs = yield db.collection('employees').find({id: 1}).toArray();
+        console.log("Result of find:", docs);
+        db.close();
+    }).catch(err => {
+        console.log('ERROR', err);
+    });
+}
+
+function testWithPromises() {
+    let db;
+    MongoClient.connect('mongodb://localhost/playground').then(connection => {
+        db = connection;
+        return db.collection('employees').insertOne({id: 1, name: 'B. Promises'});
+    }).then(result => {
+        console.log("Result of insert:", result.insertId);
+        return db.collection('employees').find({id: 1}).toArray();
+    }).then(docs => {
+        console.log("Result of find:", docs);
+        db.close();
+    }).catch(err => {
+        console.log('ERROR', err);
+    });
+}
+
+function testWithCallbacks() {
+    MongoClient.connect('mongodb://localhost/playground', function(err, db) {
+        db.collection('employees').insertOne({id: 1, name: 'A. Callback'}, function(err, result) {
+            console.log("Result of insert:", result.insertId);
+            db.collection('employees').find({id: 1}).toArray(function(err, docs) {
+                console.log("Result of find:", docs);
+                db.close();
+            });
+        });
+    });
+}
+
 function usage() {
     console.log('Usage:');
     console.log('node', __filename, '<option>');
