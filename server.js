@@ -16,27 +16,6 @@ app.use(express.static('static'));
 // mount json parser middleware from bodyParser
 app.use(bodyParser.json());
 
-const issues = [
-    {
-        id: 1,
-        status: 'Open',
-        owner: 'Ravan',
-        created: new Date('2016-08-15'),
-        effort: 5,
-        completionDate: undefined,
-        title: 'Error in console when clicking Add',
-    },
-    {
-        id: 2,
-        status: 'Assigned',
-        owner: 'Eddie Izzard',
-        created: new Date('2016-08-16'),
-        effort: 14,
-        completionDate: new Date('2016-08-30'),
-        title: 'Oi, Missing bottom border on panel',
-    },
-];
-
 // List API
 app.get('/api/issues', (req, res) => {
     db.collection('issues').find().toArray().then(issues => {
@@ -58,7 +37,6 @@ const validIssueStatus = {
 };
 
 const issueFieldType = {
-    id: 'required',
     status: 'required',
     owner: 'required',
     effort: 'optional',
@@ -90,7 +68,6 @@ app.set('json spaces', 2);
 // Create API
 app.post('/api/issues', (req, res) => {
     const newIssue = req.body;
-    newIssue.id = issues.length + 1;
     newIssue.created = new Date();
     if (!newIssue.status)
         newIssue.status = 'New';
@@ -100,8 +77,14 @@ app.post('/api/issues', (req, res) => {
         res.status(422).json({message: `Invalid Request: ${err}`});
         return;
     }
-    issues.push(newIssue);
-    res.json(newIssue);
+    db.collection('issues').insertOne(newIssue).then(result => 
+        db.collection('issues').find({ _id: result.insertId }).limit(1).next()
+    ).then(newIssue => {
+        res.json(newIssue);
+    }).catch(error => {
+        console.log(error);
+        res.status(500).json({ message: `Internal Server Error: ${error}`});
+    });
 });
 
 
