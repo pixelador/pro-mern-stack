@@ -3,7 +3,7 @@
 // load a module and save its top level export to a const
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const MongoClient = require('mongodb').MongoClient;
 
 // instantiate the application
 const app = express();
@@ -37,10 +37,15 @@ const issues = [
     },
 ];
 
+// List API
 app.get('/api/issues', (req, res) => {
-    const metadata = {total_count: issues.length};
-    console.log('Log statement before the response!');
-    res.json({_metadata: metadata, records: issues});
+    db.collection('issues').find().toArray().then(issues => {
+        const metadata = { total_count: issues.length };
+        res.json( { _metadata: metadata, records: issues });
+    }).catch(error => {
+        console.log(error);
+        res.status(500).json({ metadata: `Internal Server Error: ${error}` });
+    });
 });
 
 const validIssueStatus = {
@@ -82,6 +87,7 @@ function validateIssue(issue) {
 // sets JSON.stringify space property to 2 spaces
 app.set('json spaces', 2);
 
+// Create API
 app.post('/api/issues', (req, res) => {
     const newIssue = req.body;
     newIssue.id = issues.length + 1;
@@ -98,6 +104,14 @@ app.post('/api/issues', (req, res) => {
     res.json(newIssue);
 });
 
-app.listen(3000, function() {
-    console.log('App started on port 3000!');
+
+let db;
+MongoClient.connect('mongodb://localhost/issuetracker').then(connection => {
+    db = connection;
+    app.listen(3000, () => {
+        console.log('App started on port 3000!');
+    });    
+}).catch(error => {
+    console.log('ERROR:', error);
 });
+
