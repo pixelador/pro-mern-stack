@@ -5,6 +5,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 
+const Issue = require('./issue.js');
+
 // instantiate the application
 const app = express();
 
@@ -72,7 +74,7 @@ app.post('/api/issues', (req, res) => {
     if (!newIssue.status)
         newIssue.status = 'New';
 
-    const err = validateIssue(newIssue);
+    const err = Issue.validateIssue(newIssue);
     if (err) {
         res.status(422).json({message: `Invalid Request: ${err}`});
         return;
