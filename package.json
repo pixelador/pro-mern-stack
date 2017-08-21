@@ -6,8 +6,8 @@
   "scripts": {
     "start": "nodemon -w server server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "babel src --presets react,es2015 --out-dir static",
-    "watch": "babel src --presets react,es2015 --out-dir static --watch"
+    "compile": "webpack",
+    "watch": "webpack --watch"
   },
   "author": "Erik Lopez",
   "license": "ISC",
