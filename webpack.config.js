@@ -1,14 +1,16 @@
+const path = require('path');
+
 module.exports = {
     entry: './src/App.jsx',
     output: {
-        path: './static',
-        filename: 'app.bunle.js'
+        path: path.resolve(__dirname, 'static'),
+        filename: 'app.bundle.js'
     },
     module: {
         loaders: [
             {
                 test: /\.jsx$/,
-                loader: 'bable-loader',
+                loader: 'babel-loader',
                 query: {
                     presets: ['react','es2015']
                 }
