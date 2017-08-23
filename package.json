@@ -7,7 +7,7 @@
     "start": "nodemon -w server server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack-dev-server --hot --inline"
   },
   "author": "Erik Lopez",
   "license": "ISC",
@@ -20,9 +20,16 @@
     "babel-cli": "^6.24.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "nodemon": "^1.11.0",
-    "webpack": "^3.5.5"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "webpack": "^3.5.5",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-dev-server": "^2.7.1",
+    "webpack-hot-middleware": "^2.18.2",
+    "whatwg-fetch": "^2.0.3"
   }
 }

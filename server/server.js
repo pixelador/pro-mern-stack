@@ -18,6 +18,21 @@ app.use(express.static('static'));
 // mount json parser middleware from bodyParser
 app.use(bodyParser.json());
 
+//Initializes HMR middleware
+if (process.env.NODE_ENV !== 'production') {
+    const webpack = require('webpack');
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
+
+    const config = require('../webpack.config');
+    config.entry.app.push('webpack-hot-middleware/client', 'webpack/hot/only-dev-server');
+    config.plugins.push(new webpack.HotModuleReplacementPlugin());
+
+    const bundler = webpack(config);
+    app.use(webpackDevMiddleware(bundler, { noInfo: true }));
+    app.use(webpackHotMiddleware(bundler, { log: console.log }));
+}
+
 // List API
 app.get('/api/issues', (req, res) => {
     db.collection('issues').find().toArray().then(issues => {
