@@ -1,11 +1,18 @@
-'use strict'
+//'use strict'
 
 // load a module and save its top level export to a const
-const express = require('express');
-const bodyParser = require('body-parser');
-const MongoClient = require('mongodb').MongoClient;
 
-const Issue = require('./issue.js');
+// const express = require('express');
+// const bodyParser = require('body-parser');
+// const MongoClient = require('mongodb').MongoClient;
+
+import express from 'express';
+import bodyParser from 'body-parser';
+import { MongoClient } from 'mongodb';
+import 'babel-polyfill';
+
+//const Issue = require('./issue.js');
+import Issue from './issue.js';
 
 // instantiate the application
 const app = express();
