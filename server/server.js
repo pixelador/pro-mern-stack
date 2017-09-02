@@ -10,6 +10,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
 import 'babel-polyfill';
+import SourceMapSupport from 'source-map-support';
+
+SourceMapSupport.install();
 
 //const Issue = require('./issue.js');
 import Issue from './issue.js';
