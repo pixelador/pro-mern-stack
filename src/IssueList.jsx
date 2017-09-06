@@ -45,7 +45,7 @@ export default class IssueList extends React.Component {
     }
 
     loadData() {
-        fetch('/api/issues/').then(response => {
+        fetch('/api/issues').then(response => {
             if (response.ok) {
                 response.json().then(data => {
                     console.log("Total count of records:", data._metadata.total_count);
