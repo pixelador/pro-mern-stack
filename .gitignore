@@ -7,5 +7,6 @@ Thumbs.db
 *.log
 
 node_modules
-static/*.js
+static
+!static/*.html
 dist
