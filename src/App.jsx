@@ -7,5 +7,5 @@ const contentNode = document.getElementById('contents');
 ReactDOM.render(<IssueList />, contentNode); // Render component inside contentNode
 
 if (module.hot) {
-    module.hot.accept();
+  module.hot.accept();
 }
