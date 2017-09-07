@@ -1,11 +1,21 @@
-'use strict'
+//'use strict'
 
 // load a module and save its top level export to a const
-const express = require('express');
-const bodyParser = require('body-parser');
-const MongoClient = require('mongodb').MongoClient;
 
-const Issue = require('./issue.js');
+// const express = require('express');
+// const bodyParser = require('body-parser');
+// const MongoClient = require('mongodb').MongoClient;
+
+import express from 'express';
+import bodyParser from 'body-parser';
+import { MongoClient } from 'mongodb';
+import 'babel-polyfill';
+import SourceMapSupport from 'source-map-support';
+
+SourceMapSupport.install();
+
+//const Issue = require('./issue.js');
+import Issue from './issue.js';
 
 // instantiate the application
 const app = express();
@@ -17,6 +27,21 @@ app.use(express.static('static'));
 
 // mount json parser middleware from bodyParser
 app.use(bodyParser.json());
+
+//Initializes HMR middleware
+if (process.env.NODE_ENV !== 'production') {
+    const webpack = require('webpack');
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
+
+    const config = require('../webpack.config');
+    config.entry.app.push('webpack-hot-middleware/client', 'webpack/hot/only-dev-server');
+    config.plugins.push(new webpack.HotModuleReplacementPlugin());
+
+    const bundler = webpack(config);
+    app.use(webpackDevMiddleware(bundler, { noInfo: true }));
+    app.use(webpackHotMiddleware(bundler, { log: console.log }));
+}
 
 // List API
 app.get('/api/issues', (req, res) => {

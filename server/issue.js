@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 
 const validIssueStatus = {
     New: true,
@@ -34,6 +34,10 @@ function validateIssue(issue) {
     return null;
 }
 
-module.exports = {
+// module.exports = {
+//     validateIssue: validateIssue
+// }
+
+export default {
     validateIssue: validateIssue
-}
+};

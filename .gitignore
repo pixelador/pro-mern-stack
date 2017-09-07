@@ -4,6 +4,8 @@
 .Trashes
 ethumbs.db
 Thumbs.db
+*.log
 
 node_modules
 static/*.js
+dist

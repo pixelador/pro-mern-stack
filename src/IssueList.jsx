@@ -1,5 +1,7 @@
 import IssueAdd from './IssueAdd.jsx';
 import IssueFilter from './IssueFilter.jsx';
+import React from 'react';
+import 'whatwg-fetch';
 
 const IssueRow = (props) => (
     <tr>
@@ -43,7 +45,7 @@ export default class IssueList extends React.Component {
     }
 
     loadData() {
-        fetch('/api/issues/').then(response => {
+        fetch('/api/issues').then(response => {
             if (response.ok) {
                 response.json().then(data => {
                     console.log("Total count of records:", data._metadata.total_count);
@@ -95,7 +97,7 @@ export default class IssueList extends React.Component {
     render() {
         return (
             <div>
-                <h1>Issue Tracker</h1>
+                <h1>### Issue Tracker&reg; ###</h1>
                 <IssueFilter />
                 <hr/>
                 <IssueTable issues={this.state.issues} />
