@@ -4,36 +4,36 @@ import React from 'react';
 import 'whatwg-fetch';
 
 const IssueRow = (props) => (
-    <tr>
-        <td>{props.issue._id}</td>
-        <td>{props.issue.status}</td>
-        <td>{props.issue.owner}</td>
-        <td>{props.issue.created.toDateString()}</td>
-        <td>{props.issue.effort}</td>
-        <td>{props.issue.completionDate ? props.issue.completionDate.toDateString() : ''}</td>
-        <td>{props.issue.title}</td>
-    </tr>
+  <tr>
+    <td>{props.issue._id}</td>
+    <td>{props.issue.status}</td>
+    <td>{props.issue.owner}</td>
+    <td>{props.issue.created.toDateString()}</td>
+    <td>{props.issue.effort}</td>
+    <td>{props.issue.completionDate ? props.issue.completionDate.toDateString() : ''}</td>
+    <td>{props.issue.title}</td>
+  </tr>
 );
 
 function IssueTable(props) {
   const issueRows = props.issues.map(issue => <IssueRow key={issue._id} issue={issue} />);
 
   return (
-        <table className="bordered-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Status</th>
-                    <th>Owner</th>
-                    <th>Created</th>
-                    <th>Effort</th>
-                    <th>Completion Date</th>
-                    <th>Title</th>
-                </tr>
-            </thead>
-            <tbody>{issueRows}</tbody>
-        </table>
-    );
+    <table className="bordered-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Status</th>
+          <th>Owner</th>
+          <th>Created</th>
+          <th>Effort</th>
+          <th>Completion Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>{issueRows}</tbody>
+    </table>
+  );
 }
 
 export default class IssueList extends React.Component {
@@ -96,14 +96,14 @@ export default class IssueList extends React.Component {
 
   render() {
     return (
-            <div>
-                <h1>### Issue Tracker&reg; ###</h1>
-                <IssueFilter />
-                <hr />
-                <IssueTable issues={this.state.issues} />
-                <hr />
-                <IssueAdd createIssue={this.createIssue} />
-            </div>
-        );
+      <div>
+        <h1>### Issue Tracker&reg; ###</h1>
+        <IssueFilter />
+        <hr />
+        <IssueTable issues={this.state.issues} />
+        <hr />
+        <IssueAdd createIssue={this.createIssue} />
+      </div>
+    );
   }
 }
