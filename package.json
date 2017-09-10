@@ -41,9 +41,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "webpack": "^3.5.5",
-    "webpack-dev-middleware": "^1.12.0",
     "webpack-dev-server": "^2.7.1",
-    "webpack-hot-middleware": "^2.18.2",
     "whatwg-fetch": "^2.0.3"
   }
 }
