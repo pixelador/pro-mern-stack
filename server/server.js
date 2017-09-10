@@ -1,5 +1,3 @@
-// load a module and save its top level export to a const
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
