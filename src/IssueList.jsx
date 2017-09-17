@@ -1,5 +1,6 @@
 import React from 'react';
 import 'whatwg-fetch';
+import { Link } from 'react-router';
 
 import IssueAdd from './IssueAdd.jsx';
 import IssueFilter from './IssueFilter.jsx';
@@ -7,7 +8,7 @@ import IssueFilter from './IssueFilter.jsx';
 
 const IssueRow = (props) => (
   <tr>
-    <td>{props.issue._id}</td>
+    <td><Link to={`/issues/${props.issue._id}`}> {props.issue._id.substr(-4)} </Link></td>
     <td>{props.issue.status}</td>
     <td>{props.issue.owner}</td>
     <td>{props.issue.created.toDateString()}</td>
@@ -58,8 +59,17 @@ export default class IssueList extends React.Component {
     this.loadData();
   }
 
+  componentDidUpdate(prevProps) {
+    const oldQuery = prevProps.location.query;
+    const newQuery = this.props.location.query;
+    if (oldQuery === newQuery) {
+      return;
+    }
+    this.loadData();
+  }
+
   loadData() {
-    fetch('/api/issues').then(response => {
+    fetch(`/api/issues${this.props.location.search}`).then(response => {
       if (response.ok) {
         response.json().then(data => {
           data.records.forEach(issue => {
@@ -118,3 +128,7 @@ export default class IssueList extends React.Component {
     );
   }
 }
+
+IssueList.propTypes = {
+  location: React.PropTypes.object.isRequired,
+};
