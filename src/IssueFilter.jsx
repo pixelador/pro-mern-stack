@@ -8,7 +8,7 @@ export default class IssueFilter extends React.Component { // eslint-disable-lin
       <div>
         <Link to="/issues">All Issues</Link>
         <Seperator />
-        <Link to={{ pathname: '/issues', query: {status : 'Open'}}}>Open Issues</Link>
+        <Link to={{ pathname: '/issues', query: { status: 'Open' } }}>Open Issues</Link>
         <Seperator />
         <Link to="/issues?status=Assigned">Assigned Issues</Link>
       </div>
