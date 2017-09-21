@@ -53,6 +53,7 @@ export default class IssueList extends React.Component {
     this.state = { issues: [] };
 
     this.createIssue = this.createIssue.bind(this);
+    this.setFilter = this.setFilter.bind(this);
   }
 
   componentDidMount() {
@@ -66,6 +67,10 @@ export default class IssueList extends React.Component {
       return;
     }
     this.loadData();
+  }
+
+  setFilter(query) {
+    this.props.router.push({ pathname: this.props.location.pathname, query });
   }
 
   loadData() {
@@ -119,7 +124,7 @@ export default class IssueList extends React.Component {
     return (
       <div>
         <h1>### Issue Tracker&reg; ###</h1>
-        <IssueFilter />
+        <IssueFilter setFilter={this.setFilter} />
         <hr />
         <IssueTable issues={this.state.issues} />
         <hr />
@@ -131,4 +136,5 @@ export default class IssueList extends React.Component {
 
 IssueList.propTypes = {
   location: React.PropTypes.object.isRequired,
+  router: React.PropTypes.object,
 };
