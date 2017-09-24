@@ -1,8 +1,8 @@
 import React from 'react';
 
 export default class IssueFilter extends React.Component { // eslint-disable-line
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       status: props.initFilter.status || '',
       effort_gte: props.initFilter.effort_gte || '',
