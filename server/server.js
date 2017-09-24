@@ -6,6 +6,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
 import Issue from './issue.js';
+import path from 'path';
 
 // instantiate the application
 const app = express();
@@ -60,6 +61,11 @@ app.post('/api/issues', (req, res) => {
     console.log(error);
     res.status(500).json({ message: `Internal Server Error: ${error}` });
   });
+});
+
+// Return index.html for any request
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('static/index.html'));
 });
 
 MongoClient.connect('mongodb://localhost/issuetracker').then(connection => {
