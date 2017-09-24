@@ -3,9 +3,36 @@ import React from 'react';
 export default class IssueFilter extends React.Component { // eslint-disable-line
   constructor() {
     super();
+    this.state = {
+      status: props.initFilter.status || '',
+      effort_gte: props.initFilter.effort_gte || '',
+      effort_lte: props.initFilter.effort_lte || '',
+      changed: false,
+    };
+    this.onChangeStatus = this.onChangeStatus.bind(this);
+    this.onChangeEffortGte = this.onChangeEffortGte.bind(this);
+    this.onChangeEffortLte = this.onChangeEffortLte.bind(this);
+    this.applyFilter = this.applyFilter.bind(this);
+    this.resetFilter = this.resetFilter.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
-    this.setFilterOpen = this.setFilterOpen.bind(this);
-    this.setFilterAssigned = this.setFilterAssigned.bind(this);
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      status: newProps.initFilter.status || '',
+      effort_gte: newProps.initFilter.effort_gte || '',
+      effort_lte: newProps.initFilter.effort_lte || '',
+      changed: false,
+    });
+  }
+
+  resetFilter() {
+    this.setState({
+      status: this.props.initFilter.status || '',
+      effort_gte: this.props.initFilter.effort_gte || '',
+      effort_lte: this.props.initFilter.effort_lte || '',
+      changed: false,
+    });
   }
 
   setFilterOpen(e) {
@@ -18,8 +45,15 @@ export default class IssueFilter extends React.Component { // eslint-disable-lin
     this.props.setFilter({ status: 'Assigned' });
   }
 
-  clearFilter(e) {
-    e.preventDefault();
+  applyFilter() {
+    const newFilter = {};
+    if (this.state.status) newFilter.status = this.state.status;
+    if (this.state.effort_gte) newFilter.effort_gte = this.state.effort_gte;
+    if (this.state.effort_lte) newFilter.effort_lte = this.state.effort_lte;
+    this.props.setFilter(newFilter);
+  }
+
+  clearFilter() {
     this.props.setFilter({});
   }
 
@@ -42,7 +76,7 @@ export default class IssueFilter extends React.Component { // eslint-disable-lin
   }
 
   render() {
-    const Seperator = () => <span> | </span>;
+    // const Seperator = () => <span> | </span>;
     return (
       <div>
         Status:
@@ -69,4 +103,5 @@ export default class IssueFilter extends React.Component { // eslint-disable-lin
 
 IssueFilter.propTypes = {
   setFilter: React.PropTypes.func.isRequired,
+  initFilter: React.PropTypes.object.isRequired,
 };
