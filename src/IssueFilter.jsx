@@ -23,6 +23,24 @@ export default class IssueFilter extends React.Component { // eslint-disable-lin
     this.props.setFilter({});
   }
 
+  onChangeStatus(e) {
+    this.setState({ status: e.target.value, changed: true });
+  }
+
+  onChangeEffortGte(e) {
+    const effortString = e.target.value;
+    if (effortString.match(/^\d*$/)) {
+      this.setState({ effort_gte: e.target.value, changed: true });
+    }
+  }
+
+  onChangeEffortLte(e) {
+    const effortString = e.target.value;
+    if (effortString.match(/^\d*$/)) {
+      this.setState({ effort_lte: e.target.value, changed: true });
+    }
+  }
+
   render() {
     const Seperator = () => <span> | </span>;
     return (
